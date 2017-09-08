@@ -12,17 +12,20 @@ export default new Router({
     {
       path: '/',
       name: 'List',
-      component: List
+      component: List,
+      props: {type: 'topstories'}
     },
     {
       path: '/new-stories',
       name: 'New stories',
-      component: newStories
+      component: List,
+      props: {type: 'newstories'}
     },
     {
       path: '/best-stories',
       name: 'Best stories',
-      component: bestStories
+      component: List,
+      props: {type: 'beststories'}
     },
   ]
 })
