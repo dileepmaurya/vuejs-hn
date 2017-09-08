@@ -1,13 +1,18 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <Navigation></Navigation>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import Navigation from './components/Navigation'
+
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    Navigation
+  }
 }
 </script>
 

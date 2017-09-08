@@ -27,7 +27,7 @@ export default {
     let store = new Store()
     let that = this;
     
-    store.getTopStories().then((items) => {
+    store.getNewStories().then((items) => {
       this.loading = false;
       this.items = [].concat(items);
     }).catch(function(err){

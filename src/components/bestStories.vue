@@ -27,12 +27,13 @@ export default {
     let store = new Store()
     let that = this;
     
-    store.getTopStories().then((items) => {
+    store.getBestStories().then((items) => {
       this.loading = false;
       this.items = [].concat(items);
     }).catch(function(err){
       console.log(err)
     })
+    
   }
 }
 </script>
