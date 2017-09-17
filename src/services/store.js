@@ -1,58 +1,74 @@
 import firebase from './firebase'
 import { Promise } from 'es6-promise'
 
+let instance = null;
+
 class Store {
   constructor () {
+    if(!instance){
+      instance = this;
+    }
+
     this.api = new firebase()
-    this.items = {
-      topstories: [],
-      newstories: [],
-      beststories: [],
-    };
+    this.items = {};
+    this.storiesPerPage = 50;
+
+    return instance;
   }
 
-  getTopStories = function () {
-    return this.getStories('topstories');
+  getTotalItem = function(type) {
+    if (typeof this.items[type] !== 'undefined') {
+      return this.items[type].length;
+    }
+
+    return 0;
   }
 
-  getNewStories = function () {
-    return this.getStories('newstories');
+  getStoriesPerPage = function () {
+    return this.storiesPerPage
   }
 
-  getBestStories = function () {
-    return this.getStories('beststories');
+  setStoriesPerPage = function (storiesPerPage) {
+    this.storiesPerPage = storiesPerPage;
   }
 
-  getAskStories = function () {
-    return this.getStories('askstories');
+  getPageItems = function (type, page = 1) {
+    const start = (page - 1) * this.storiesPerPage
+    const end = page * this.storiesPerPage
+    return this.items[type].slice(start, end);
   }
 
-  getShowStories = function () {
-    return this.getStories('showstories');
+  fetchDataByPage = function (type, page = 1) {
+    return new Promise((resolve, reject) => {
+      if (typeof this.items[type] !== 'undefined' && this.items[type].length) {
+        resolve(this.getPageItems(type, page));
+      } else {
+        this.getStories(type).then((items) => {
+          resolve(this.getPageItems(type, page));
+        }).catch(function(err){
+            console.log(err)
+        })
+      }
+    })
   }
 
-  getJobStories = function () {
-    return this.getStories('jobstories');
-  }
-
-  getStories = function(type) {
-    let that = this;
-
+  getStories = function (type) {
     return new Promise((resolve, reject) => {
 
-      that.getItems(type).then((items) => {
+      this.getItems(type).then((items) => {
         var promises = items.map(id => {
-          return that.getItem(id).then((item) => {
+          return this.getItem(id).then((item) => {
             return item;
           }).catch((err) => {
             console.log(err)
           })
         })
+
         Promise.all(promises).then((values) => {
-          // that.items[type] = [].concat(values);
-          // console.log(that);
+          this.items[type] = [].concat(values);
           resolve(values);
         })
+
       }).catch((err) => {
         console.log(err)
       })

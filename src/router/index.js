@@ -10,22 +10,41 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'List',
+      path: '/top-stories/:page?',
+      name: 'Top stories',
       component: List,
-      props: {type: 'topstories'}
+      props: (route) => ({
+        type: 'topstories', 
+        page: (isNaN(parseInt(route.params.page))) ? 1 : parseInt(route.params.page)
+      })
     },
     {
-      path: '/new-stories',
+      path: '/new-stories/:page?',
       name: 'New stories',
       component: List,
-      props: {type: 'newstories'}
+      props: (route) => ({
+        type: 'newstories', 
+        page: (isNaN(parseInt(route.params.page))) ? 1 : parseInt(route.params.page)
+      })
     },
     {
-      path: '/best-stories',
+      path: '/best-stories/:page?',
       name: 'Best stories',
       component: List,
-      props: {type: 'beststories'}
+      props: (route) => ({
+        type: 'beststories', 
+        page: (isNaN(parseInt(route.params.page))) ? 1 : parseInt(route.params.page)
+      })
     },
+    {
+      path: '/ask-stories/:page?',
+      name: 'Ask stories',
+      component: List,
+      props: (route) => ({
+        type: 'askstories', 
+        page: (isNaN(parseInt(route.params.page))) ? 1 : parseInt(route.params.page)
+      })
+    },
+    
   ]
 })

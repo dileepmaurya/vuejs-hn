@@ -1,6 +1,6 @@
 <template>
   <div class="item">
-    <span class="index">{{ srialNo }}.</span>
+    <span class="index">{{ index }}.</span>
     <p> 
       <a class="title" target="_blank" :href="item.url">{{ item.title }}</a> 
       <span class="domain"> ({{ item.url | domain }}) </span> 
@@ -24,7 +24,7 @@ export default {
   		return this.item.descendants
   	},
   	srialNo() {
-  		return this.index+1
+  		return this.index
   	}
   }
 }
